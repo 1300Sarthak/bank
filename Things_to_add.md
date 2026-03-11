@@ -1,0 +1,7 @@
+- Full dexter integration into the application
+- Simplier way to upload which stocks I have
+- Query each part of the application
+- Get more infomration on which stocks are going well and etc
+- get infomration + add cyrpto to this
+- Think of full finance app and what is missing imagine all yours fianace in one place, add a CSV export and built in excel thing on daily spending etc and you can set goals etc and itll show if your on track (using teller API)
+- Build out the UI more and make it even nicer and add quality of life things to it

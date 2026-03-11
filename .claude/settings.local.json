@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -r \"chart\\\\|historical\" /Users/sarthak/projects/bank/bank/vertex/node_modules/yahoo-finance2/dist/esm/src/modules/ --include=\"*.d.ts\" -l 2>/dev/null | head -5)",
+      "Bash(cd /Users/sarthak/projects/bank/bank/vertex && npx tsc --noEmit 2>&1 | head -40)",
+      "Bash(cat /Users/sarthak/projects/bank/bank/vertex/app/api/holdings/\\\\[id\\\\]/route.ts)",
+      "Bash(npx tsc:*)"
+    ]
+  }
+}
