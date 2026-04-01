@@ -1,1 +1,32 @@
+# Dependencies
+vertex/node_modules/
+
+# Next.js build
+vertex/.next/
+
+# Environment files
+vertex/.env.local
+vertex/.env*.local
+
+# SQLite database files
+vertex/*.db
+vertex/*.db-wal
+vertex/*.db-shm
+
+# Teller mTLS certificates
 teller/
+vertex/teller/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Debug
+npm-debug.log*
+
+# Vercel
+.vercel

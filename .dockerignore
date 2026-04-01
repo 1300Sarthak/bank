@@ -1,0 +1,40 @@
+# Dependencies (installed fresh in Docker)
+vertex/node_modules/
+
+# Build output
+vertex/.next/
+
+# Database files (created at runtime)
+vertex/*.db
+vertex/*.db-wal
+vertex/*.db-shm
+
+# Environment secrets
+vertex/.env.local
+vertex/.env*.local
+.env.local
+
+# Teller certificates
+teller/
+vertex/teller/
+
+# Tests
+vertex/__tests__/
+vertex/vitest.config.ts
+
+# Git
+.git
+.gitignore
+
+# IDE / editor
+.claude/
+.cursor/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs (not needed in image)
+Things_to_add.md
