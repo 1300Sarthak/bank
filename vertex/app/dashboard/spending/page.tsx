@@ -1,136 +1,122 @@
-"use client";
-
-import { useState, useMemo } from "react";
-import { useTellerAccounts } from "@/hooks/useTellerAccounts";
-import { useTellerTransactions } from "@/hooks/useTellerTransactions";
-import useSWR from "swr";
-import AccountsOverview from "@/components/spending/AccountsOverview";
-import TransactionTable from "@/components/spending/TransactionTable";
-import SpendingFilters from "@/components/spending/SpendingFilters";
-
-const fetcher = (url: string) => fetch(url).then((r) => r.json());
-
-const ALL_CATEGORIES = [
-  "Food & Drink",
-  "Shopping",
-  "Transport",
-  "Entertainment",
-  "Bills & Utilities",
-  "Health",
-  "Travel",
-  "Other",
-];
-
 export default function SpendingPage() {
-  const { accounts, isLoading: accountsLoading, error: accountsError } = useTellerAccounts();
-  const { data: balances = [] } = useSWR(
-    accounts.length > 0 ? "/api/teller/balances" : null,
-    fetcher
-  );
-
-  const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
-  const [searchText, setSearchText] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
-
-  const activeAccountId = selectedAccount || (accounts.length > 0 ? accounts[0].id : null);
-  const { transactions, isLoading: txLoading } = useTellerTransactions(
-    activeAccountId,
-    dateFrom || undefined,
-    dateTo || undefined
-  );
-
-  const filteredTx = useMemo(() => {
-    let result = transactions;
-
-    if (searchText) {
-      const s = searchText.toLowerCase();
-      result = result.filter((t) => t.description.toLowerCase().includes(s));
-    }
-
-    if (selectedCategories.length > 0) {
-      result = result.filter((t) => selectedCategories.includes(t.category));
-    }
-
-    return result;
-  }, [transactions, searchText, selectedCategories]);
-
-  const toggleCategory = (cat: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(cat) ? prev.filter((c) => c !== cat) : [...prev, cat]
-    );
-  };
-
-  if (accountsError) {
-    return (
-      <>
-        <div className="main-header fade-in">
-          <h1 className="main-title">Spending</h1>
-        </div>
-        <div
-          style={{
-            background: "var(--bg-card)",
-            border: "1px solid var(--border)",
-            borderRadius: "var(--radius)",
-            padding: 40,
-            textAlign: "center",
-            color: "var(--text-secondary)",
-          }}
-        >
-          <p style={{ marginBottom: 8 }}>
-            Unable to connect to Teller.io
-          </p>
-          <p style={{ fontSize: 12, color: "var(--text-tertiary)" }}>
-            Ensure your Teller certificates and access token are configured in .env.local
-          </p>
-        </div>
-      </>
-    );
-  }
-
   return (
     <>
       <div className="main-header fade-in">
         <h1 className="main-title">Spending</h1>
       </div>
 
-      {accountsLoading ? (
-        <div style={{ color: "var(--text-tertiary)", padding: 40 }}>Loading accounts…</div>
-      ) : (
-        <>
-          <AccountsOverview accounts={accounts} balances={balances} />
-
-          <div className="fade-in fade-in-delay-2">
-            <div className="section-title" style={{ marginTop: 24 }}>
-              Transactions
-            </div>
-
-            <SpendingFilters
-              accounts={accounts.map((a) => ({ id: a.id, name: a.name }))}
-              selectedAccount={selectedAccount}
-              onAccountChange={setSelectedAccount}
-              categories={ALL_CATEGORIES}
-              selectedCategories={selectedCategories}
-              onCategoryToggle={toggleCategory}
-              searchText={searchText}
-              onSearchChange={setSearchText}
-              dateFrom={dateFrom}
-              dateTo={dateTo}
-              onDateFromChange={setDateFrom}
-              onDateToChange={setDateTo}
-            />
-
-            {txLoading ? (
-              <div style={{ color: "var(--text-tertiary)", padding: 40 }}>
-                Loading transactions…
-              </div>
-            ) : (
-              <TransactionTable transactions={filteredTx} />
-            )}
+      <div className="fade-in fade-in-delay-1">
+        <div
+          style={{
+            background: "var(--bg-card)",
+            border: "1px solid var(--border)",
+            borderRadius: "var(--radius)",
+            padding: "80px 40px",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 16,
+          }}
+        >
+          <div
+            style={{
+              width: 56,
+              height: 56,
+              borderRadius: 16,
+              background: "var(--accent-muted)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <svg
+              width="28"
+              height="28"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="var(--accent)"
+              strokeWidth="1.5"
+            >
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
+              <line x1="1" y1="10" x2="23" y2="10" />
+            </svg>
           </div>
-        </>
-      )}
+
+          <div>
+            <div
+              style={{
+                fontSize: 11,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "var(--accent)",
+                marginBottom: 8,
+              }}
+            >
+              Coming Soon
+            </div>
+            <h2
+              style={{
+                fontSize: 20,
+                fontWeight: 700,
+                color: "var(--text-primary)",
+                margin: "0 0 8px",
+                fontFamily: "var(--font-display)",
+              }}
+            >
+              Bank Account Spending
+            </h2>
+            <p
+              style={{
+                fontSize: 13,
+                color: "var(--text-secondary)",
+                lineHeight: 1.6,
+                maxWidth: 420,
+                margin: "0 auto",
+              }}
+            >
+              Link your bank accounts via Teller.io to view balances,
+              browse transactions, and track spending across all your
+              institutions — all in one place.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              gap: 24,
+              marginTop: 16,
+              flexWrap: "wrap",
+              justifyContent: "center",
+            }}
+          >
+            {[
+              { label: "Account Balances", icon: "💳" },
+              { label: "Transaction History", icon: "📊" },
+              { label: "Spending Filters", icon: "🔍" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  padding: "8px 16px",
+                  borderRadius: "var(--radius-sm)",
+                  background: "var(--bg-hover)",
+                  border: "1px solid var(--border)",
+                  fontSize: 12,
+                  color: "var(--text-tertiary)",
+                }}
+              >
+                <span>{item.icon}</span>
+                {item.label}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </>
   );
 }

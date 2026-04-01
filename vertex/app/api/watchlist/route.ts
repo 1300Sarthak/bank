@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import getDb from "@/lib/db";
 import { z } from "zod/v4";
 
@@ -10,18 +8,12 @@ const addWatchlistSchema = z.object({
 });
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const db = getDb();
   const items = db.prepare("SELECT * FROM watchlist ORDER BY added_at DESC").all();
   return NextResponse.json(items);
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const body = await req.json();
   const result = addWatchlistSchema.safeParse(body);
 

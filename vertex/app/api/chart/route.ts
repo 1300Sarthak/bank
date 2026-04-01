@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import YahooFinance from "yahoo-finance2";
 
 const yf = new YahooFinance({ suppressNotices: ["yahooSurvey"] });
@@ -25,9 +23,6 @@ const PERIODS: Record<string, PeriodConfig> = {
 };
 
 export async function GET(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   const ticker = req.nextUrl.searchParams.get("ticker");
   const period = req.nextUrl.searchParams.get("period") ?? "1D";
 

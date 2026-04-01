@@ -4,17 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 
-interface TellerAccountLink {
-  id: string;
-  name: string;
-  institution: string;
-}
-
-interface SidebarProps {
-  tellerAccounts?: TellerAccountLink[];
-}
-
-export default function Sidebar({ tellerAccounts = [] }: SidebarProps) {
+export default function Sidebar() {
   const pathname = usePathname();
 
   const isActive = (path: string) => {
@@ -75,21 +65,23 @@ export default function Sidebar({ tellerAccounts = [] }: SidebarProps) {
             <rect x="1" y="4" width="22" height="16" rx="2" ry="2" />
             <line x1="1" y1="10" x2="23" y2="10" />
           </svg>
-          All Accounts
-        </Link>
-        {tellerAccounts.map((account) => (
-          <Link
-            key={account.id}
-            href={`/dashboard/spending/${account.id}`}
-            className={`sidebar-item ${isActive(`/dashboard/spending/${account.id}`) ? "active" : ""}`}
+          Spending
+          <span
+            style={{
+              marginLeft: "auto",
+              fontSize: 9,
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.06em",
+              color: "var(--accent)",
+              background: "var(--accent-muted)",
+              padding: "2px 6px",
+              borderRadius: 4,
+            }}
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M21 4H3a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
-              <path d="M16 12h4" />
-            </svg>
-            {account.institution}
-          </Link>
-        ))}
+            Soon
+          </span>
+        </Link>
       </div>
 
       <div className="sidebar-section">

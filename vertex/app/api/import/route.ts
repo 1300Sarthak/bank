@@ -1,15 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import getDb from "@/lib/db";
 import { checkRateLimit } from "@/lib/ratelimit";
 import Papa from "papaparse";
 import { validateCsvRows } from "@/lib/validators/csv";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-
   if (!checkRateLimit("import")) {
     return NextResponse.json({ error: "Rate limited" }, { status: 429 });
   }

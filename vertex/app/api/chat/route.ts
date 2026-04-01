@@ -1,19 +1,9 @@
 import { NextRequest } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { runAgent } from "@/lib/agent/run";
 import { checkRateLimit } from "@/lib/ratelimit";
 import getDb from "@/lib/db";
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session) {
-    return new Response(JSON.stringify({ error: "Unauthorized" }), {
-      status: 401,
-      headers: { "Content-Type": "application/json" },
-    });
-  }
-
   if (!checkRateLimit("chat")) {
     return new Response(JSON.stringify({ error: "Rate limited" }), {
       status: 429,
